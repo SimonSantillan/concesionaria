@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+<body>
+  <%- include('./partials/header-admin')%>
+
+  <main class="main-admin">
+    <div>
+      <h1>Bienvenido al panel de administracíon</h1>
+      <p>Acá podrás iniciar sesión o dar de alta a un nuevo administrador</p>
+      
+      <form action="/admin" method="POST" class="form-login">
+        
+        <input type="email" name="email" id="email" placeholder="E-mail"><br>
+      
+        
+        <input type="password" name="password" id="password" placeholder="Contraseña"><br>
+      
+        <input type="submit" value="Iniciar sesión">
+      </form>
+      
+      <section class="error-admin">
+        <% if (typeof(errors) !=='undefined' ) { %>
+          <p style="color:red">ERROR</p>
+          <ul>
+            <% for (let i=0; i < errors.length; i++) { %>
+              <li>
+                <%= errors[i].msg %>
+              </li>
+              <% } %>
+          </ul>
+          <% } %>
+      
+      
+            <% if(typeof(message) !=='undefined' ) { %>
+              <p>
+                <%=message%>
+              </p>
+              <% } %>
+      </section>
+    </div>
+  </main>
+  <%- include('./partials/footer')%>
+</body>
+</html>

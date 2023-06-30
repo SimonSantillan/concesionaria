@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+
+  <body>
+    <%- include('./partials/header-panel.ejs') %>
+      <main class="main-panel">
+        <div>
+          <aside class="menu">
+            <div>
+              <a href="/panel/datos">Datos de tu cuenta</a>
+              <a href="/panel/sucursal-a">Agregar Sucursal</a>
+              <a href="/panel/sucursal-q">Quitar sucursal</a>
+              <a href="/panel/sucursal-ac">Actualizar sucursal</a>
+              <a href="">Ver sucursales</a>
+              <a href="">Agregar Auto</a>
+              <a href="">Quitar Auto</a>
+              <a href="">Actualizar Auto</a>
+              <a href="">Ver autos</a>
+            </div>
+          </aside>
+
+          <section class="principal">
+            <h1>Agregar Sucursal</h1>
+            <form action="/panel/sucursal-a" class="panel-form-agregar" method="POST" enctype="multipart/form-data">
+              <input type="text" name="link" id="link" placeholder="Nombre de la sucursal (letras y guiones)"><br>
+              <input type="text" name="sucursal" id="sucursal" placeholder="Nombre de la sucursal"><br>
+              <input type="text" name="direccion" id="direccion" placeholder="Dirección de la sucursal"><br>
+              <input type="text" name="telefono" id="telefono" placeholder="Teléfono de la sucursal (Con guiones)"><br>
+              <label for="foto">Elegir una foto de la sucursal</label><br>
+              <input type="file" name="foto" id="foto" style="display: none;">
+              <input type="submit" value="Agregar sucursal">
+            </form>
+
+            <% if( typeof(datos) !== 'undefined') {%>
+              <p style="color: greenyellow;">Sucursal agregada con exito</p>
+            <% } %>
+          </section>
+        </div>
+      </main>
+      <%- include('./partials/footer')%>
+  </body>
+
+</html>

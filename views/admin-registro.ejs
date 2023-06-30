@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+
+  <body>
+    <%- include('./partials/header-admin')%>
+
+      <main class="main-admin">
+        <div>
+          <h1>Bienvenido al panel de administracíon</h1>
+          <p>Acá podrás dar de alta a un nuevo administrador</p>
+
+          <form action="/admin/registro" method="POST" enctype="multipart/form-data" class="form-register">
+          
+            <label for="foto" class="foto">Subir una imagen</label>
+            <input type="file" name="foto" id="foto"><br>
+          
+            <input type="text" name="nombre" id="nombre" placeholder="Nombre"><br>
+          
+            <input type="text" name="apellido" id="apellido" placeholder="Apellido"><br>
+          
+            <input type="number" name="dni" id="dni" placeholder="DNI"><br>
+            <input type="date" name="nacimiento" id="nacimiento"><br>
+          
+            <input type="email" name="email" id="email" placeholder="E-mail"><br>
+          
+            <input type="password" name="password" id="password" placeholder="Contraseña"><br>
+          
+            <input type="submit" value="Registrar">
+          </form>
+
+
+          
+          <section class="error-register">
+            <% if (typeof(errors) !=='undefined' ) { %>
+              <p style="color:red">ERROR</p>
+              <ul>
+                <% for (let i=0; i < errors.length; i++) { %>
+                  <li>
+                    <%= errors[i].msg %>
+                  </li>
+                  <% } %>
+              </ul>
+              <% } %>
+            
+            
+                <% if (typeof(img)!=='undefined' ) { %>
+            
+                  <p>
+                    <%= img %>
+                  </p>
+            
+                  <% } %>
+            
+                    <% if (typeof(mail)!=='undefined' ) { %>
+            
+                      <p>
+                        <%= mail %>
+                      </p>
+            
+                      <% } %>
+          </section>
+
+
+        </div>
+      </main>
+      <%- include('./partials/footer')%>
+  </body>
+
+</html>

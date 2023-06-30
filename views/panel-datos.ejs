@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+
+  <body>
+    <%- include('./partials/header-panel.ejs') %>
+      <main class="main-panel">
+        <div>
+          <aside class="menu">
+            <div>
+              <a href="/panel/datos">Datos de tu cuenta</a>
+              <a href="/panel/sucursal-a">Agregar Sucursal</a>
+              <a href="/panel/sucursal-q">Quitar sucursal</a>
+              <a href="/panel/sucursal-ac">Actualizar sucursal</a>
+              <a href="">Ver sucursales</a>
+              <a href="">Agregar Auto</a>
+              <a href="">Quitar Auto</a>
+              <a href="">Actualizar Auto</a>
+              <a href="">Ver autos</a>
+            </div>
+          </aside>
+          <section class="principal">
+            <div class="usuario">
+              <img src="<%= usuario.foto %>" alt="">
+              <div>
+                <p><span>Nombre:</span> <%= usuario.nombre %></p>
+                <p><span>Apellido:</span> <%= usuario.apellido %></p>
+                <p><span>DNI:</span> <%= usuario.dni %> </p>
+                <p><span>Nacimiento:</span> <%= usuario.nacimiento.substring(0,10) %></p>
+                <p><span>Mail:</span> <%= usuario.mail %></p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+      <%- include('./partials/footer')%>
+  </body>
+
+</html>

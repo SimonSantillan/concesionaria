@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+
+  <body>
+    <%- include('./partials/header-panel.ejs') %>
+      <main class="main-panel">
+        <div>
+          <aside class="menu">
+            <div>
+              <a href="/panel/datos">Datos de tu cuenta</a>
+              <a href="/panel/sucursal-a">Agregar Sucursal</a>
+              <a href="/panel/sucursal-q">Quitar sucursal</a>
+              <a href="/panel/sucursal-ac">Actualizar sucursal</a>
+              <a href="">Ver sucursales</a>
+              <a href="">Agregar Auto</a>
+              <a href="">Quitar Auto</a>
+              <a href="">Actualizar Auto</a>
+              <a href="">Ver autos</a>
+            </div>
+          </aside>
+
+          <section class="principal actualizar">
+            <div>
+              <h1>Actualizar sucursal</h1>
+              <p>Selecciona una sucursal</p>
+              <select name="select" id="sucursal-select">
+                <option value=""> <-- Seleccionar --> </option>
+                <% for (let i=0;i < sucursales1.length; i++) { %>
+                  <option value="<%= sucursales1[i].link %>">
+                    <%= sucursales1[i].sucursal %>
+                  </option>
+                  <%}%>
+              </select>
+              <section id="sucursal-info">
+                <img src="" alt="" id="sucursal-foto">
+                <h1 id="sucursal-nombre"><b>Nombre:</b></h1>
+                <p id="sucursal-direccion"><b>Dirección:</b></p>
+                <p id="sucursal-telefono"><b>Teléfono:</b></p>
+              </section>
+            </div>
+            
+            <form action="" class="panel-form-actualizar" method="POST" id="form-id">
+              
+              <input type="text" name="sucursal" id="sucursal" placeholder="Nuevo nombre de la sucursal"><br>
+              <input type="text" name="direccion" id="direccion" placeholder="Nueva dirección de la sucursal"><br>
+              <input type="text" name="telefono" id="telefono" placeholder="Nuevo teléfono de la sucursal (Con guiones)"><br>
+              
+              <input type="submit" value="Actualizar sucursal">
+            </form>
+            
+        </div>
+        <script>
+          const sucursalSelect = document.getElementById('sucursal-select');
+          const sucursalNombre = document.getElementById('sucursal-nombre');
+          const sucursalDireccion = document.getElementById('sucursal-direccion');
+          const sucursalTelefono = document.getElementById('sucursal-telefono');
+          const sucursalFoto = document.getElementById('sucursal-foto');
+          const sucursalId = document.getElementById('form-id');
+          let sucursales = JSON.parse('<%- JSON.stringify(sucursales1) %>');
+
+          console.log(sucursales);
+
+          sucursalSelect.addEventListener('change', () => {
+            const selectedOption = sucursalSelect.value;
+            console.log(selectedOption);
+            const selectedSucursal = sucursales.find(sucursal => sucursal.link === selectedOption);
+            console.log(selectedSucursal);
+
+
+            if (selectedSucursal) {
+              sucursalNombre.textContent = selectedSucursal.sucursal;
+              sucursalDireccion.textContent = selectedSucursal.direccion;
+              sucursalTelefono.textContent = selectedSucursal.telefono;
+              sucursalFoto.src = selectedSucursal.foto;
+              sucursalId.action = `/panel/sucursal-ac/${selectedSucursal.id}?_method=PUT`;
+            } else {
+              sucursalNombre.textContent = '';
+              sucursalDireccion.textContent = '';
+              sucursalTelefono.textContent = '';
+              sucursalFoto.src = '';
+            }
+          })
+
+
+
+        </script>
+      </main>
+      <%- include('./partials/footer')%>
+  </body>
+
+</html>
