@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+
+  <body>
+    <%- include('./partials/header-panel.ejs') %>
+      <main class="main-panel">
+        <div>
+          <aside class="menu">
+            <%- include('./partials/panel-menu.ejs') %>
+          </aside>
+
+          <section class="principal">
+            <h1>Agregar Autos</h1>
+            <h2>Seleccionar sucursal</h2>
+            <select name="select" id="sucursal-select">
+              <option value=""> <-- Seleccionar --> </option>
+              <% for (let i=0;i < sucursales.length; i++) { %>
+                <option value="<%= sucursales[i].link %>">
+                  <%= sucursales[i].sucursal %>
+                </option>
+                <%}%>
+            </select>
+            <form action="/panel/autos-a" class="panel-form-agregar" method="POST" enctype="multipart/form-data">
+              <input type="text" name="marca" id="marca" placeholder="Marca del auto"><br>
+              <input type="text" name="modelo" id="modelo" placeholder="Modelo del auto"><br>
+              <input type="text" name="anio" id="anio" placeholder="Año del auto"><br>
+              <input type="text" name="color" id="color" placeholder="Color del auto"><br>
+              <input type="number" name="sucursalId" id="sucursalId" readonly ><br>
+              <label for="foto">Elegir una foto del auto</label><br>
+              <input type="file" name="foto" id="foto" style="display: none;">
+              <input type="submit" value="Agregar auto">
+            </form>
+
+            <% if( typeof(datos) !=='undefined' ) {%>
+              <p style="color: greenyellow;">Auto agregado con éxito</p>
+            <% } %>
+          </section>
+        </div>
+        <script>
+          const sucursalSelect = document.getElementById('sucursal-select');
+          const sucursalId = document.getElementById('sucursalId');
+          let sucursales = JSON.parse('<%- JSON.stringify(sucursales) %>');
+
+          console.log(sucursales);
+
+          sucursalSelect.addEventListener('change', () => {
+            const selectedOption = sucursalSelect.value;
+            console.log(selectedOption);
+            const selectedSucursal = sucursales.find(sucursal => sucursal.link === selectedOption);
+            console.log(selectedSucursal);
+
+
+            if (selectedSucursal) {
+              sucursalId.value = selectedSucursal.id;
+            } else {
+              sucursalId.value = 0;
+            }
+          })
+
+
+
+        </script>
+      </main>
+      <%- include('./partials/footer')%>
+  </body>
+
+</html>

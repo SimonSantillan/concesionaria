@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+
+  <body>
+    <%- include('./partials/header-panel.ejs') %>
+      <main class="main-panel">
+        <div>
+          <aside class="menu">
+            <%- include('./partials/panel-menu.ejs') %>
+          </aside>
+          <section class="principal">
+            <h1> Nuestras sucursales </h1>
+
+            <div class="sucursal-vista">
+              
+              <% for (let i = 0; i < sucursales.length; i++) { %>
+              <div>
+                <img src="<%= sucursales[i].foto %>" alt="">
+                <div>
+                    <p><%= sucursales[i].sucursal %></p>
+                    <p><%= sucursales[i].direccion %></p>
+                    <p><%= sucursales[i].telefono %></p>
+                  </div>
+                </div>
+              <% } %>
+
+
+            </div>
+            
+
+          </section>
+        </div>
+      </main>
+      <%- include('./partials/footer')%>
+  </body>
+
+</html>

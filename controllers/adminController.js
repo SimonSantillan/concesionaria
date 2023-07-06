@@ -1,6 +1,7 @@
 let { check, validationResult, body } = require("express-validator");
 let Usuarios = require('../sources/models/Usuarios.js')
 let session = require("express-session");
+const bcrypt = require("bcrypt");
 
 let adminController = {
   registro: function (req, res) {
@@ -86,7 +87,8 @@ let adminController = {
         if (dnis[i] === parseInt(dni)) {
           mismoDNI= true;
         }
-      }/* 
+      }
+      /*
       console.log(dni)
       console.log(dnis[0])
       console.log(mismoDNI) */
@@ -107,14 +109,14 @@ let adminController = {
       try {
 
       const newUsuario = await Usuarios.create({
-          nombre,
-          apellido,
-          dni,
-          nacimiento,
-          mail: email,
-          contrasenia: password,
-          foto: ubicacion
-        });
+        nombre,
+        apellido,
+        dni,
+        nacimiento,
+        mail: email,
+        contrasenia: bcrypt.hashSync(password, 10),
+        foto: ubicacion,
+      });
       } catch (error) {
         console.log(error)
       }
@@ -140,26 +142,45 @@ let adminController = {
 
       /* Comparo las credenciales y busco si están en mi base de datos */
 
-      const usuario = await Usuarios.findOne({
+      /* const usuario = await Usuarios.findOne({
         where: {
           mail: email,
           contrasenia: password,
         },
+      }); */
+
+      const usuario = await Usuarios.findOne({
+        where: {
+          mail: email,
+        },
       });
 
-      /* Si está en mi base de datos, me logueo y si no está, no me logueo */
       var userLogueado;
+      /* Si el mail del usuario se encontró, compara las contraseñas */
       if (usuario) {
-        userLogueado = usuario;
-        // Voy a estar guardando la persona a loguearse, si todo lo anterior salió todo bien, guardo en la sesion la persona a loguearse, aca abajo en esta línea, el usuario ya quedo en session con lo cual lo puedo compartir en un montón de vistas en toda mi aplicacion por que es un middleware a nivel aplicación
-        req.session.userLogueado = userLogueado;
-        res.redirect("/panel");
+        const contraseniaCoincide = await bcrypt.compare(password, usuario.contrasenia);
+
+        if (contraseniaCoincide) {
+          /* La contraseña es correcta, el usuario ha iniciado sesión exitosamente */
+          userLogueado = usuario;
+          /* Voy a estar guardando la persona a loguearse, si todo lo anterior salió todo bien, guardo en la sesion la persona a loguearse, aca abajo en esta línea, el usuario ya quedo en session con lo cual lo puedo compartir en un montón de vistas en toda mi aplicacion por que es un middleware a nivel aplicación */
+          req.session.userLogueado = userLogueado;
+          res.redirect("/panel");
+        } else {
+          /* La contraseña es incorrecta */
+          res.render("admin", {
+            title: "Panel: Error de Logueo",
+            message: "Contraseña incorrecta",
+          });
+        }
       } else {
+        /* No se encontró un usuario con el correo electrónico proporcionado */
         res.render("admin", {
           title: "Panel: Error de Logueo",
-          message: 'Email o contraseña incorrectos',
+          message: "El email ingresado no se encuentra en nuestra base de datos",
         });
       }
+
 
       
     } else {

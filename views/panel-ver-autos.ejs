@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+
+  <body>
+    <%- include('./partials/header-panel.ejs') %>
+      <main class="main-panel">
+        <div>
+          <aside class="menu">
+            <%- include('./partials/panel-menu.ejs') %>
+          </aside>
+          <section class="principal">
+            <h1> Nuestros autos </h1>
+
+            <div class="autos-vista">
+              
+              <% for (let i = 0; i < todosAutos.length; i++) { %>
+              <div>
+                <img src="<%= todosAutos[i].foto %>" alt="">
+                <div>
+                    <p><%= todosAutos[i].marca %></p>
+                    <p><%= todosAutos[i].modelo %></p>
+                    <p><%= todosAutos[i].anio %></p>
+                    <p><%= todosAutos[i].color %></p>
+                  </div>
+                </div>
+              <% } %>
+
+
+            </div>
+            
+
+          </section>
+        </div>
+      </main>
+      <%- include('./partials/footer')%>
+  </body>
+
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+
+  <body>
+    <%- include('./partials/header-panel.ejs') %>
+      <main class="main-panel">
+        <div>
+          <aside class="menu">
+            <%- include('./partials/panel-menu.ejs') %>
+          </aside>
+          <section class="principal">
+            <h1>Quitar Autos</h1>
+            <p> Seleccione una sucursal </p>
+            <select name="select" id="sucursal-select">
+              <option value=""> <-- Seleccionar --> </option>
+              <% for (let i=0;i < sucursalYautos.length; i++) { %>
+                <option value="<%= sucursalYautos[i].link %>">
+                  <%= sucursalYautos[i].sucursal %>
+                </option>
+              <%}%>
+            </select>
+            <p>Seleccione un auto</p>
+            <select name="select" id="auto-select">
+              <option value=""> <-- Seleccionar --> </option>
+            </select>
+            <br>
+            <section id="auto-info">
+              <img src="" alt="" id="auto-foto">
+              <h1 id="auto-marca"><b>Marca:</b></h1>
+              <p id="auto-modelo"><b>Modelo:</b></p>
+              <p id="auto-anio"><b>Año:</b></p>
+              <p id="auto-color"><b>Color:</b></p>
+              <form action="" method="POST" id="auto-id">
+                <!-- Otros campos del formulario -->
+            
+                <button type="submit">Eliminar auto</button>
+              </form>
+            </section>
+
+
+
+          </section>
+        </div>
+        <script>
+          /* Obtengo las referencias a los elementos que renderizaran el auto */
+          const autoFoto = document.getElementById('auto-foto');
+          const autoMarca = document.getElementById('auto-marca');
+          const autoModelo = document.getElementById('auto-modelo');
+          const autoAnio = document.getElementById('auto-anio');
+          const autoColor = document.getElementById('auto-color');
+          /* Obtengo la referencia del form para eliminar un auto */
+          const autoId = document.getElementById('auto-id');
+          /* Obtengo las referencias a los select */
+          let sucursalSelect = document.getElementById("sucursal-select");
+          let autoSelect = document.getElementById("auto-select");
+          let sucursales = JSON.parse('<%- JSON.stringify(sucursalYautos) %>');
+          console.log(sucursales);
+
+          function actualizarAutos() {
+            /* Tomo como indice el valor del select actual */
+            let selectedOption = sucursalSelect.value;
+            console.log(selectedOption);
+            const selectedSucursal = sucursales.find(sucursal => sucursal.link === selectedOption)
+            console.log(selectedSucursal);
+            let autos = selectedSucursal.Autos;
+            console.log(autos);
+            
+            /* Limpiar el select anterior */
+            autoSelect.innerHTML = "";
+            autoMarca.textContent = '';
+            autoModelo.textContent = '';
+            autoAnio.textContent = '';
+            autoColor.textContent = '';
+            autoFoto.src = '';
+
+            let option1 = document.createElement("option");
+            option1.text = '<--- Seleccionar Autos --->';
+            autoSelect.appendChild(option1);
+
+
+             /* Rellenar el select de autos */
+            for (var i = 0; i < autos.length; i++) {
+              var option = document.createElement("option");
+              option.value = autos[i].id;
+              option.text = autos[i].marca + " - " + autos[i].modelo;
+              autoSelect.appendChild(option);
+            }
+          }
+
+          sucursalSelect.addEventListener("change", actualizarAutos);
+
+          /* Ahora del selected de autos generado quiero su id para poder ver el auto en cuestión */
+          
+          /* Objeto de todos los autos */
+          let todosAutos = JSON.parse('<%- JSON.stringify(todosAutos) %>')
+          console.log(todosAutos);
+          
+          autoSelect.addEventListener('change', () => {
+              const selectedOption = parseInt(autoSelect.value);
+              console.log(selectedOption);
+              console.log(typeof parseInt(selectedOption));
+              const selectedAuto = todosAutos.find(autos => autos.id === selectedOption);
+              console.log(selectedAuto);
+
+
+              if (selectedAuto) {
+                autoMarca.textContent = selectedAuto.marca;
+                autoModelo.textContent = selectedAuto.modelo;
+                autoAnio.textContent = selectedAuto.anio;
+                autoColor.textContent = selectedAuto.color;
+                autoFoto.src = selectedAuto.foto;
+                autoId.action = `/panel/autos-q/${selectedAuto.id}?_method=DELETE`;
+              } else {
+                autoMarca.textContent = '';
+                autoModelo.textContent = '';
+                autoAnio.textContent = '';
+                autoColor.textContent = '';
+                autoFoto.src = '';
+              }
+            })
+
+
+
+
+        </script>
+      </main>
+      <%- include('./partials/footer')%>
+  </body>
+
+</html>

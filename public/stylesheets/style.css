@@ -180,7 +180,9 @@ body {
   display: flex;
   gap: 15px;
 }
-
+.principal {
+  overflow-y: scroll;
+}
 
 /* panel-datos */
 .main-panel .usuario {
@@ -203,8 +205,21 @@ body {
   font-weight: bold;
 }
 
+
 /* panel imagen */
 #sucursal-foto {
+  width: 350px;
+}
+#auto-info {
+  margin-top: 25px;
+}
+#auto-info img {
+  display: block;
+  width: 350px;
+}
+
+
+.autos-vista img {
   width: 350px;
 }
 

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<%- include('./partials/head-panel')%>
+
+  <body>
+    <%- include('./partials/header-panel.ejs') %>
+      <main class="main-panel">
+        <div>
+          <aside class="menu">
+            <%- include('./partials/panel-menu.ejs') %>
+          </aside>
+          <section class="principal">
+            <h1>Quitar sucursales</h1>
+            <p>Selecciona una sucursal</p>
+            <div>
+              <select name="select" id="sucursal-select">
+                <option value=""> <-- Seleccionar --> </option>
+                <% for (let i = 0;i < sucursales1.length; i++) { %>
+                  <option value="<%= sucursales1[i].link %>">
+                    <%= sucursales1[i].sucursal %>
+                  </option>
+                <% } %>
+              </select>
+              <section id="sucursal-info">
+                <img src="" alt="" id="sucursal-foto">
+                <h1 id="sucursal-nombre"><b>Nombre:</b></h1>
+                <p id="sucursal-direccion"><b>Dirección:</b></p>
+                <p id="sucursal-telefono"><b>Teléfono:</b></p>
+                <form action="" method="POST" id="sucursal-id">
+                  <!-- Otros campos del formulario -->
+          
+                  <button type="submit">Eliminar sucursal</button>
+                </form>
+              </section>
+            </div>
+
+            <script>
+              const sucursalSelect = document.getElementById('sucursal-select');
+              const sucursalNombre = document.getElementById('sucursal-nombre');
+              const sucursalDireccion = document.getElementById('sucursal-direccion');
+              const sucursalTelefono = document.getElementById('sucursal-telefono');
+              const sucursalFoto = document.getElementById('sucursal-foto');
+              const sucursalId = document.getElementById('sucursal-id');
+              let sucursales = JSON.parse('<%- JSON.stringify(sucursales1) %>')
+              console.log(sucursales);
+              
+              sucursalSelect.addEventListener('change', () => {
+                const selectedOption = sucursalSelect.value;
+                console.log(selectedOption);
+                const selectedSucursal = sucursales.find(sucursal => sucursal.link === selectedOption);
+                console.log(selectedSucursal);
+                  
+                
+                  if (selectedSucursal) {
+                    sucursalNombre.textContent = selectedSucursal.sucursal;
+                    sucursalDireccion.textContent = selectedSucursal.direccion;
+                    sucursalTelefono.textContent = selectedSucursal.telefono;
+                    sucursalFoto.src = selectedSucursal.foto;
+                    sucursalId.action = `/panel/sucursal-q/${selectedSucursal.id}?_method=DELETE`;
+                  } else {
+                    sucursalNombre.textContent = '';
+                    sucursalDireccion.textContent = '';
+                    sucursalTelefono.textContent = '';
+                    sucursalFoto.src = '';
+                  }
+                })
+              
+
+
+            </script>
+
+            
+          </section>
+        </div>
+      </main>
+      <%- include('./partials/footer')%>
+  </body>
+
+</html>
