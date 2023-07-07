@@ -147,9 +147,17 @@ let panelController = {
     console.log(id); */
 
     const sucursalA = await Sucursales.findByPk(id);
-    sucursalA.set("sucursal", sucursal);
-    sucursalA.set("direccion", direccion);
-    sucursalA.set("telefono", telefono);
+
+    if (sucursal !== "") {
+      sucursalA.set("sucursal", sucursal);
+    }
+    if (direccion !== "") {
+      sucursalA.set("direccion", direccion);
+    }
+    if (telefono !== "") {
+      sucursalA.set("telefono", telefono);
+    }
+
 
     /* Guardo la informacion  */
     await sucursalA.save();
@@ -168,7 +176,7 @@ let panelController = {
     let sucursales = JSON.stringify(sucursalesBD);
     /* Lo convierto a objeto JS */
     sucursales = JSON.parse(sucursales);
-    console.log(sucursales);
+    
 
     res.render("panel-ver-sucursal", {
       title: "Panel: Sucursales",
@@ -176,6 +184,13 @@ let panelController = {
     });
   },
   autosA: async function (req, res) {
+
+    if (req.session.userLogueado === undefined) {
+      return res.render("admin", {
+        title: "Panel: Error de Logueo",
+        message: "Por favor logueate",
+      });
+    }
     const sucursalesBD = await Sucursales.findAll();
 
     /* Lo convierto a objeto JSON */
@@ -217,10 +232,9 @@ let panelController = {
 
     /* Obtengo la ubicación del archivo y le recorto una parte de la url para que pueda ser usada por las vistas */
     let file = req.file.destination;
-    console.log(file);
+    
     let ubicacion = `${file.slice(6)}/${req.file.filename}`;
-    console.log(ubicacion);
-    console.log(req.body);
+
     /* Obtengo los datos enviados por parámetro */
     const { marca, modelo, anio, color, sucursalId } = req.body;
     /* Los guardo en un objeto para almacenarlo en la sesion */
@@ -330,10 +344,19 @@ let panelController = {
     console.log(id); */
 
     const autosA = await Autos.findByPk(id);
-    autosA.set("marca", marca);
-    autosA.set("modelo", modelo);
-    autosA.set("anio", anio);
-    autosA.set("color", color);
+    
+    if (marca !== "") {
+      autosA.set("marca", marca);
+    }
+    if (modelo !== "") {
+      autosA.set("modelo", modelo);
+    }
+    if (anio !== "") {
+      autosA.set("anio", anio);
+    }
+    if (color !== "") {
+      autosA.set("color", color);
+    }
 
     /* Guardo la informacion  */
     await autosA.save();
